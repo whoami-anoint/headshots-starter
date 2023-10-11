@@ -14,12 +14,17 @@ export const dynamic = "force-dynamic";
 export default async function Index() {
   const supabase = createServerComponentClient({ cookies });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (user) {
-    return redirect("/overview");
+    if (user) {
+      return redirect("/overview");
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    // Handle the error, e.g., redirect to an error page
   }
 
   return (
